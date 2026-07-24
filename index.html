@@ -315,13 +315,11 @@ loadLeaderboard();
 
 else{
 
+let errorText = await response.text();
+
 alert(
-"Error saving score"
+"Error:\n" + errorText
 );
-
-}
-
-
 
 }
 
