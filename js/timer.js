@@ -1,90 +1,192 @@
 const startButton = document.getElementById("startWorkoutBtn");
 
-startButton.addEventListener("click", () => {
+startButton.addEventListener("click", startWorkout);
+
+function value(id) {
+    return parseInt(document.getElementById(id).value, 10);
+}
+
+let config = {};
+let state = {};
+
+function startWorkout() {
+
+    config = {
+        ready: value("readyInput"),
+        squeeze: value("squeezeInput"),
+        release: value("releaseInput"),
+        handSwitch: value("switchInput"),
+        reps: value("repsInput"),
+        sets: value("setsInput")
+    };
+
+    state = {
+        hand: "LEFT",
+        rep: 1,
+        set: 1
+    };
+
+    runReady();
+}
+
+function workoutScreen(title, seconds, status) {
+
     document.getElementById("content").innerHTML = `
         <section class="screen active">
 
             <div class="card hero">
 
-                <h2 id="phaseText">READY</h2>
+                <h2 id="phase">${title}</h2>
 
-                <div id="timerValue"
-                     style="font-size:72px;font-weight:800;margin:25px 0;">
-                    3
+                <div id="time"
+                     style="
+                     font-size:90px;
+                     font-weight:800;
+                     margin:30px 0;">
+                     ${seconds}
                 </div>
 
-                <p id="statusText">
-                    Get ready...
+                <p>${status}</p>
+
+                <p style="margin-top:20px;">
+                    ${state.hand} HAND
                 </p>
 
-                <button class="primaryButton"
-                        id="cancelWorkout">
-                    Finish Workout
-                </button>
+                <p>
+                    Rep ${state.rep}/${config.reps}
+                    •
+                    Set ${state.set}/${config.sets}
+                </p>
 
             </div>
 
         </section>
     `;
 
-    let sequence = [
-        {text:"READY",seconds:3},
-        {text:"SQUEEZE",seconds:5},
-        {text:"RELEASE",seconds:3},
-        {text:"SQUEEZE",seconds:5},
-        {text:"RELEASE",seconds:3},
-        {text:"DONE",seconds:0}
-    ];
+}
 
-    let phase = 0;
+function countdown(seconds, finished) {
 
-    function nextPhase(){
+    workoutScreen(
+        document.getElementById("phase")?.textContent || "",
+        seconds,
+        ""
+    );
 
-        if(phase >= sequence.length)
-            return;
+    let remaining = seconds;
 
-        let item = sequence[phase];
+    document.getElementById("time").textContent = remaining;
 
-        document.getElementById("phaseText").textContent = item.text;
+    const timer = setInterval(() => {
 
-        if(item.seconds === 0){
+        remaining--;
 
-            document.getElementById("timerValue").textContent = "✓";
+        document.getElementById("time").textContent = remaining;
 
-            document.getElementById("statusText").textContent =
-                "Workout complete!";
+        if (remaining <= 0) {
 
-            return;
+            clearInterval(timer);
+
+            finished();
+
         }
 
-        let remaining = item.seconds;
+    }, 1000);
 
-        document.getElementById("timerValue").textContent = remaining;
+}
 
-        let interval = setInterval(()=>{
+function runReady() {
 
-            remaining--;
+    workoutScreen(
+        "READY",
+        config.ready,
+        "Prepare..."
+    );
 
-            document.getElementById("timerValue").textContent = remaining;
+    countdown(config.ready, runSqueeze);
 
-            if(remaining<=0){
+}
 
-                clearInterval(interval);
+function runSqueeze() {
 
-                phase++;
+    workoutScreen(
+        "SQUEEZE",
+        config.squeeze,
+        "Close the gripper."
+    );
 
-                nextPhase();
+    countdown(config.squeeze, runRelease);
 
-            }
+}
 
-        },1000);
+function runRelease() {
+
+    workoutScreen(
+        "RELEASE",
+        config.release,
+        "Open slowly."
+    );
+
+    countdown(config.release, completeRep);
+
+}
+
+function completeRep() {
+
+    if (state.rep < config.reps) {
+
+        state.rep++;
+
+        runReady();
+
+        return;
 
     }
 
-    nextPhase();
+    if (state.hand === "LEFT") {
 
-    document
-        .getElementById("cancelWorkout")
-        .addEventListener("click",()=>location.reload());
+        state.hand = "RIGHT";
 
-});
+        state.rep = 1;
+
+        workoutScreen(
+            "SWITCH HAND",
+            config.handSwitch,
+            "Change hands."
+        );
+
+        countdown(config.handSwitch, runReady);
+
+        return;
+
+    }
+
+    if (state.set < config.sets) {
+
+        state.set++;
+
+        state.hand = "LEFT";
+
+        state.rep = 1;
+
+        workoutScreen(
+            "NEXT SET",
+            config.handSwitch,
+            "Get ready."
+        );
+
+        countdown(config.handSwitch, runReady);
+
+        return;
+
+    }
+
+    workoutScreen(
+        "DONE ✓",
+        0,
+        "Workout complete!"
+    );
+
+    document.getElementById("time").textContent = "✓";
+
+}
