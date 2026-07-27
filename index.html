@@ -50,58 +50,67 @@
 
         <section id="trainScreen" class="screen active">
 
-            <div class="card hero">
+    <div class="card hero">
 
-                <h2>Grip Training</h2>
+        <h2>Grip Workout</h2>
 
-                <p>
-                    Build crushing grip strength with guided workouts.
-                </p>
+        <div class="settings">
 
-                <button id="startWorkoutBtn" class="primaryButton">
-                    Start Workout
-                </button>
+            <label for="readyInput">Ready (sec)</label>
+            <input id="readyInput" type="number" value="3" min="1" max="10">
 
+            <label for="squeezeInput">Squeeze (sec)</label>
+            <input id="squeezeInput" type="number" value="5" min="1" max="30">
+
+            <label for="releaseInput">Release (sec)</label>
+            <input id="releaseInput" type="number" value="3" min="1" max="20">
+
+            <label for="switchInput">Switch Hands (sec)</label>
+            <input id="switchInput" type="number" value="4" min="1" max="15">
+
+            <label for="repsInput">Reps per Hand</label>
+            <input id="repsInput" type="number" value="10" min="1" max="30">
+
+            <label for="setsInput">Sets</label>
+            <input id="setsInput" type="number" value="3" min="1" max="10">
+
+        </div>
+
+        <button id="startWorkoutBtn" class="primaryButton">
+            Start Workout
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Today's Goal</h3>
+
+        <p>Complete one full workout.</p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Quick Stats</h3>
+
+        <div class="statRow">
+
+            <div>
+                <span class="label">Best Grip</span>
+                <strong id="bestGripValue">-- kg</strong>
             </div>
 
-
-            <div class="card">
-
-                <h3>Today's Goal</h3>
-
-                <p>Complete one full workout.</p>
-
+            <div>
+                <span class="label">Workouts</span>
+                <strong id="workoutCount">0</strong>
             </div>
 
+        </div>
 
-            <div class="card">
+    </div>
 
-                <h3>Quick Stats</h3>
-
-                <div class="statRow">
-
-                    <div>
-
-                        <span class="label">Best Grip</span>
-
-                        <strong id="bestGripValue">-- kg</strong>
-
-                    </div>
-
-                    <div>
-
-                        <span class="label">Workouts</span>
-
-                        <strong id="workoutCount">0</strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
+</section>
 
 
         <!-- LEADERBOARD -->
