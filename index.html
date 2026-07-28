@@ -33,26 +33,27 @@
       padding: 24px;
     }
     .app {
-      width: min(980px, 100%);
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
       background: rgba(23,26,33,0.88);
       backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow: hidden;
-    }
+}
     .grid {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      min-height: 680px;
-    }
+    display: flex;
+    flex-direction: column;
+}
     .panel, .main {
       padding: 28px;
     }
     .panel {
-      background: rgba(255,255,255,0.03);
-      border-right: 1px solid var(--border);
-    }
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+}
     h1, h2, h3, p { margin: 0; }
     .brand {
       display: flex;
