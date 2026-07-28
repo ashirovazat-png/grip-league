@@ -635,12 +635,15 @@
     });
 
     resetWorkout();
-  </script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
+
+<script>
 const tg = window.Telegram.WebApp;
+
 tg.ready();
 tg.expand();
+
+console.log(tg.initDataUnsafe.user);
 </script>
 
 </body>
